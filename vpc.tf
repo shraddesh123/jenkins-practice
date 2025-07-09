@@ -17,3 +17,14 @@ resource "aws_internet_gateway" "aws_internet_gateway" {
     Name = "jenkins-igw"
   }
 }
+resource "aws_route_table" "my-rt" {
+  vpc_id = aws_vpc.my-vpc.id
+  route {
+    gateway_id = aws_internet_gateway.aws_internet_gateway.id
+    cidr_block = "0.0.0.0/0"
+  }
+}
+resource "aws_route_table_association" "rt-association" {
+  subnet_id      = aws_subnet.my_subnet.id
+  route_table_id = aws_route_table.my-rt.id
+}
